@@ -25,7 +25,7 @@
 
     <core-header-panel drawer mode="waterfall">
       <core-toolbar class="{{ {tall : !narrow} | tokenList }}">Choose programming language:</core-toolbar>
-        <paper-radio-group>
+        <paper-radio-group id ="language" selected="{{language}}">
           <paper-radio-button label="C"></paper-radio-button><br>
           <paper-radio-button label="C++"></paper-radio-button><br>
           <paper-radio-button label="Java"></paper-radio-button><br>
@@ -69,6 +69,9 @@
         e.stopPropagation();
         e.preventDefault();
         this.selectFiles(e.dataTransfer.files);
+    },
+    languageChanged: function () {
+      alert(this.language);
     }
   });
 </script>
