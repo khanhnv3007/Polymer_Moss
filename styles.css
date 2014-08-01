@@ -32,38 +32,16 @@
   background-color: #526E9C;
   color: #fff;
 }
-
-paper-fab {
-  background-color: #e0a30b;
-  position: absolute !important;
-  bottom: -27px;
-  right: 1em;
-  z-index: 10;
+core-scaffold {
+  font-family: 'Roboto', Arial;
 }
-
-.card {
-  width: 300px;
-  background-color: #fff;
-  padding: 1em;
-  margin: 1em;
-  position: relative;
-}
-
-*[data-fade-selected="true"] .item[data-done="true"] {
-  opacity: 0.3;
-}
-
-paper-button[raisedButton].colored {
-  width: 100%;
-  background: #4285f4;
-  color: #fff;
-  fill: #fff;
-}
-
-.fit {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-}
+#dropzone {
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        padding: 90px 10px;
+        text-align: center;
+        font: 20pt bold 'Helvetica';
+        color: #bbb;
+        background: white;
+      }
