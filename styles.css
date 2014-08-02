@@ -45,7 +45,7 @@ core-scaffold {
       }
 
       #files::before {
-        content: 'Click to upload your code :)';
+        content: 'Click to add your codes :)';
         background: white;
         padding: 5px;
         outline: none;

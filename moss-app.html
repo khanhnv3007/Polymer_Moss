@@ -11,13 +11,14 @@
 <link rel="import" href="bower_components/core-localstorage/core-localstorage.html">
 <link rel="import" href="bower_components/core-item/core-item.html">
 <link rel="import" href="bower_components/paper-toggle-button/paper-toggle-button.html">
-<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="bower_components/paper-shadow/paper-shadow.html">
 <link rel="import" href="bower_components/paper-ripple/paper-ripple.html">
 <link rel="import" href="bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="bower_components/paper-radio-button/paper-radio-button.html">
+<script src="jquery-1.11.1.js"></script>
+  <link rel="import" href="my-Btn.html">
 <polymer-element name="moss-app">
   <template>
   <link rel="stylesheet" href="styles.css">
@@ -42,12 +43,13 @@
 
     <core-header-panel main mode="waterfall">
       <core-toolbar class="{{ {tall : !narrow} | tokenList }}">
+
         <paper-icon-button icon="menu" on-click="{{toggleDrawer}}"></paper-icon-button>
         <span flex>Check Code</span>
       </core-toolbar>
-
-          <input type="file" id="files" name="files[]"
-          on-change="{{handleFilePick}}" multiple>
+          <paper-icon-button icon="add" on-click="{{trigger_input}}"></paper-icon-button>
+          <input id="input_hiden" type="file" id="files" name="files[]"
+          on-change="{{handleFilePick}}" multiple style="display: none">
 
     </core-header-panel>
   </core-drawer-panel>
@@ -56,6 +58,9 @@
   Polymer('moss-app', {
     uploadList: [],    // selected files
     uploadedList: [],  // successfully uploaded files
+    trigger_input: function() {
+      $('#input_hiden').trigger('click');
+    },
     toggleDrawer: function() {
       this.$.drawerPanel.togglePanel();
     },
