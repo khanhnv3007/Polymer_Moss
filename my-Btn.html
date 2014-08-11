@@ -2,7 +2,7 @@
 <link rel="import" href="bower_components/font-roboto/roboto.html">
 <link rel="import" href="bower_components/paper-fab/paper-fab.html">
 <script src="jquery-1.11.1.js"></script>
-<polymer-element name="my-Btn" extends="paper-fab" on-click={{trigger_input}}>
+<polymer-element name="my-Btn" extends="paper-fab" on-tap="{{trigger_input}}">
   <template>
     <shadow></shadow>
     <input id="input_hiden" type="file">
