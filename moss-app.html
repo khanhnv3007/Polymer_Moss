@@ -24,8 +24,8 @@
 <script>
     $http({
         method: 'POST',
-        url: 'myAPIserver.php/',
-        data: "myPhoto=" + photo,
+        url: 'service.php/',
+        data: "language=" + this.language,
         headers: {'Content-Type': 'multipart/form-data'}
     });
 </script>
@@ -68,7 +68,10 @@
                     <paper-icon-button icon="menu" on-click="{{toggleDrawer}}"></paper-icon-button>
                     <span flex>Check Code Via Moss</span>
                     <paper-fab id="btn-upload" icon="add" on-click="{{tapSelect}}"></paper-fab>
-                    <input id="input_hiden" type="file" style="display: none" name="files[]" on-change="{{handleFilePick}}" multiple></input>
+                    <form method="POST" enctype="multipart/form-data" action = "service.php">
+                        <input id="input_hiden" type="file" style="display: none" name="files[]" on-change="{{handleFilePick}}" multiple></input>
+                        <input type="hidden" id="language_code" name="language_code"></input>
+                    </form>
                 </core-toolbar>
                 <div id="dropzone" on-tap="{{tapSelect}}" on-dragover="{{handleDragOver}}" on-drop="{{handleFileSelect}}">
                     Drag files which want to check
