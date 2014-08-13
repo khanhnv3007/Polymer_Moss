@@ -17,6 +17,7 @@
 <link rel="import" href="bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="bower_components/file-input/file-input.html">
+<link rel="import" href="bower_components/core-ajax/core-ajax.html">
 <script src="jquery-1.11.1.js"></script>
 <link rel="import" href="my-Btn.html">
 <polymer-element name="moss-app">
@@ -27,37 +28,37 @@
             <core-header-panel drawer mode="waterfall">
                 <core-toolbar>Choose programming language:</core-toolbar>
                 <paper-radio-group id="language" selected="{{language}}">
-                    <paper-radio-button label="C" value="1"></paper-radio-button>
+                    <paper-radio-button name="C" label="C"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="C++" value="2"></paper-radio-button>
+                    <paper-radio-button name="C++" label="C++"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="Java" value="3"></paper-radio-button>
+                    <paper-radio-button name="Java" label="Java"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="javaScript" value="4"></paper-radio-button>
+                    <paper-radio-button name="javaScript" label="javaScript"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="Python" value="5"></paper-radio-button>
+                    <paper-radio-button name="Python" label="Python"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="C#" value="6"></paper-radio-button>
+                    <paper-radio-button name="C#" label="C#"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="PHP" value="7"></paper-radio-button>
+                    <paper-radio-button name="PHP" label="PHP"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="Objective-C" value="8"></paper-radio-button>
+                    <paper-radio-button name="Objective-C" label="Objective-C"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="Perl" value="9"></paper-radio-button>
+                    <paper-radio-button name="Perl" label="Perl"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="Matlab" value="10"></paper-radio-button>
+                    <paper-radio-button name="Matlab" label="Matlab"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="TCL" value="11"></paper-radio-button>
+                    <paper-radio-button name="TCL" label="TCL"></paper-radio-button>
                     <br>
                 </paper-radio-group>
             </core-header-panel>
-
+            <core-ajax></core-ajax>
             <core-header-panel main mode="waterfall">
                 <core-toolbar>
                     <paper-icon-button icon="menu" on-click="{{toggleDrawer}}"></paper-icon-button>
                     <span flex>Check Code Via Moss</span>
                     <paper-fab id="btn-upload" icon="add" on-click="{{tapSelect}}"></paper-fab>
-                    <input id="input_hiden" type="file" style="display: none" name="files[]" on-change="{{handleFilePick}}" multiple></input>
+                    <form id="uploadForm"><input id="input_hiden" type="file" style="display: none" name="files[]" on-change="{{handleFilePick}}" multiple></input></form>
                 </core-toolbar>
                 <div id="dropzone" on-tap="{{tapSelect}}" on-dragover="{{handleDragOver}}" on-drop="{{handleFileSelect}}">
                     Drag files which want to check
@@ -69,7 +70,7 @@
                         </template>
                     </ul>
                 </div>
-                <paper-fab icon="backup" style="position: fixed; bottom: 10px; right: 16px; color: white"></paper-fab>
+                <paper-fab icon="backup" style="position: fixed; bottom: 10px; right: 16px; color: white" on-click="{{uploadFiles}}"></paper-fab>
             </core-header-panel>
         </core-drawer-panel>
     </template>
@@ -101,20 +102,16 @@
         },
         uploadFiles: function(files) {
             var uploadedList = this.uploadedList;
-            this.$.status.innerHTML = 'Uploading...';
-            var f;
-            for (var i = 0; f = files[i]; i++) {
-                var uploader = new MediaUploader({
-                    file: f,
-                    token: this.accessToken,
-                    onComplete: function(data) {
-                        uploadedList.push(JSON.parse(data));
-                        this.$.status.innerHTML = 'Upload successful';
-                        this.uploadList = [];
-                    }.bind(this)
-                });
-                uploader.upload();
-            }
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', '/Polymer_Moss/service.php', true);
+            var formData = new FormData(this.$.uploadForm);
+            formData.append('language', this.language);
+            // for (var i = 0, file; file = uploadedList[i]; ++i) {
+            //   formData.append(file.name, file);
+            // };
+            console.log(formData);
+            xhr.onload = function(e) {};
+            xhr.send(formData);
         },
         manualUpload: function() {
             this.uploadFiles(this.queue);
@@ -127,7 +124,7 @@
             }
         },
         languageChanged: function() {
-            console.log(this.language.value);
+            console.log(this.language);
         },
         toggleDrawer: function() {
             this.$.drawerPanel.togglePanel();
