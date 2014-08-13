@@ -17,7 +17,18 @@
 <link rel="import" href="bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="bower_components/paper-radio-button/paper-radio-button.html">
 <link rel="import" href="bower_components/file-input/file-input.html">
+<link rel="import" href="bower_components/core-ajax/core-ajax.html">
 <script src="jquery-1.11.1.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.22/angular.min.js"></script>
+
+<script>
+    $http({
+        method: 'POST',
+        url: 'myAPIserver.php/',
+        data: "myPhoto=" + photo,
+        headers: {'Content-Type': 'multipart/form-data'}
+    });
+</script>
 <link rel="import" href="my-Btn.html">
 <polymer-element name="moss-app">
     <template>
@@ -27,31 +38,31 @@
             <core-header-panel drawer mode="waterfall">
                 <core-toolbar>Choose programming language:</core-toolbar>
                 <paper-radio-group id="language" selected="{{language}}">
-                    <paper-radio-button label="C" value="1"></paper-radio-button>
+                    <paper-radio-button name="C" label="C"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="C++" value="2"></paper-radio-button>
+                    <paper-radio-button name="C++" label="C++"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="Java" value="3"></paper-radio-button>
+                    <paper-radio-button name="Java" label="Java"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="javaScript" value="4"></paper-radio-button>
+                    <paper-radio-button name="javaScript" label="javaScript"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="Python" value="5"></paper-radio-button>
+                    <paper-radio-button name="Python" label="Python"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="C#" value="6"></paper-radio-button>
+                    <paper-radio-button name="C#" label="C#"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="PHP" value="7"></paper-radio-button>
+                    <paper-radio-button name="PHP" label="PHP"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="Objective-C" value="8"></paper-radio-button>
+                    <paper-radio-button name="Objective-C" label="Objective-C"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="Perl" value="9"></paper-radio-button>
+                    <paper-radio-button name="Perl" label="Perl"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="Matlab" value="10"></paper-radio-button>
+                    <paper-radio-button name="Matlab" label="Matlab"></paper-radio-button>
                     <br>
-                    <paper-radio-button label="TCL" value="11"></paper-radio-button>
+                    <paper-radio-button name="TCL" label="TCL"></paper-radio-button>
                     <br>
                 </paper-radio-group>
             </core-header-panel>
-
+            <core-ajax></core-ajax>
             <core-header-panel main mode="waterfall">
                 <core-toolbar>
                     <paper-icon-button icon="menu" on-click="{{toggleDrawer}}"></paper-icon-button>
@@ -74,64 +85,64 @@
         </core-drawer-panel>
     </template>
     <script>
-    Polymer('moss-app', {
-        uploadList: [], // selected files
-        uploadedList: [], // successfully uploaded files
-        tapSelect: function(e) {
-            this.$.input_hiden.click();
-        },
-        handleDragOver: function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'copy';
-        },
-        handleFilePick: function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.selectFiles(e.target.files);
-        },
-        handleFileSelect: function(e) {
-            e.stopPropagation();
-            e.preventDefault();
-            this.selectFiles(e.dataTransfer.files);
-        },
-        clearUploadList: function() {
-            this.uploadedList = [];
-            this.uploadList = [];
-        },
-        uploadFiles: function(files) {
-            var uploadedList = this.uploadedList;
-            this.$.status.innerHTML = 'Uploading...';
-            var f;
-            for (var i = 0; f = files[i]; i++) {
-                var uploader = new MediaUploader({
-                    file: f,
-                    token: this.accessToken,
-                    onComplete: function(data) {
-                        uploadedList.push(JSON.parse(data));
-                        this.$.status.innerHTML = 'Upload successful';
-                        this.uploadList = [];
-                    }.bind(this)
-                });
-                uploader.upload();
-            }
-        },
-        manualUpload: function() {
-            this.uploadFiles(this.queue);
-        },
-        selectFiles: function(files) {
-            this.queue = files;
-            var f;
-            for (var i = 0; f = files[i]; i++) {
-                this.uploadList.push(f);
-            }
-        },
-        languageChanged: function() {
-            console.log(this.language.value);
-        },
-        toggleDrawer: function() {
-            this.$.drawerPanel.togglePanel();
-        },
-    });
+        Polymer('moss-app', {
+            uploadList: [], // selected files
+            uploadedList: [], // successfully uploaded files
+            tapSelect: function(e) {
+                this.$.input_hiden.click();
+            },
+            handleDragOver: function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                e.dataTransfer.dropEffect = 'copy';
+            },
+            handleFilePick: function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.selectFiles(e.target.files);
+            },
+            handleFileSelect: function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+                this.selectFiles(e.dataTransfer.files);
+            },
+            clearUploadList: function() {
+                this.uploadedList = [];
+                this.uploadList = [];
+            },
+            uploadFiles: function(files) {
+                var uploadedList = this.uploadedList;
+                this.$.status.innerHTML = 'Uploading...';
+                var f;
+                for (var i = 0; f = files[i]; i++) {
+                    var uploader = new MediaUploader({
+                        file: f,
+                        token: this.accessToken,
+                        onComplete: function(data) {
+                            uploadedList.push(JSON.parse(data));
+                            this.$.status.innerHTML = 'Upload successful';
+                            this.uploadList = [];
+                        }.bind(this)
+                    });
+                    uploader.upload();
+                }
+            },
+            manualUpload: function() {
+                this.uploadFiles(this.queue);
+            },
+            selectFiles: function(files) {
+                this.queue = files;
+                var f;
+                for (var i = 0; f = files[i]; i++) {
+                    this.uploadList.push(f);
+                }
+            },
+            languageChanged: function() {
+                console.log(this.language);
+            },
+            toggleDrawer: function() {
+                this.$.drawerPanel.togglePanel();
+            },
+        });
     </script>
 </polymer-element>
