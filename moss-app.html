@@ -17,7 +17,6 @@
 <link rel="import" href="bower_components/paper-radio-group/paper-radio-group.html">
 <link rel="import" href="bower_components/paper-radio-button/paper-radio-button.html">
 
-<link rel="import" href="my-Btn.html">
 <polymer-element name="moss-app">
     <template>
         <link rel="stylesheet" href="styles.css">
@@ -56,7 +55,9 @@
                     <paper-icon-button icon="menu" on-click="{{toggleDrawer}}"></paper-icon-button>
                     <span flex>Check Code Via Moss</span>
                     <paper-fab id="btn-upload" icon="add" on-click="{{tapSelect}}"></paper-fab>
-                    <form id="uploadForm"><input id="input_hiden" type="file" style="display: none" name="files[]" on-change="{{handleFilePick}}" multiple></input></form>
+                    <form id="uploadForm">
+                      <input id="input_hiden" type="file" style="display: none" name="files[]" on-change="{{handleFilePick}}" multiple></input>
+                    </form>
                 </core-toolbar>
                 <div id="dropzone" on-tap="{{tapSelect}}" on-dragover="{{handleDragOver}}" on-drop="{{handleFileSelect}}">
                     Drag files which want to check
@@ -67,6 +68,7 @@
                             </li>
                         </template>
                     </ul>
+                    <div>{{result}}</div>
                 </div>
                 <paper-fab icon="backup" style="position: fixed; bottom: 10px; right: 16px; color: white" on-click="{{uploadFiles}}"></paper-fab>
             </core-header-panel>
@@ -99,17 +101,16 @@
             this.uploadList = [];
         },
         uploadFiles: function(files) {
-            var uploadedList = this.uploadedList;
+        //     var uploadedList = this.uploadedList;
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/Polymer_Moss/service.php', true);
             var formData = new FormData(this.$.uploadForm);
-            formData.append('language', this.language);
-            // for (var i = 0, file; file = uploadedList[i]; ++i) {
-            //   formData.append(file.name, file);
-            // };
-            console.log(formData);
-            xhr.onload = function(e) {};
-            xhr.send(formData);
+            formData.append('language',this.language);
+            var result;
+            xhr.onload = function(e) {result = xhr.responseText;};
+            xhr.send(formData, function() {
+              window.open(result);
+            });
         },
         manualUpload: function() {
             this.uploadFiles(this.queue);
@@ -120,9 +121,6 @@
             for (var i = 0; f = files[i]; i++) {
                 this.uploadList.push(f);
             }
-        },
-        languageChanged: function() {
-            console.log(this.language);
         },
         toggleDrawer: function() {
             this.$.drawerPanel.togglePanel();
