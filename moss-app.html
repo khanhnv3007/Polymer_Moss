@@ -55,7 +55,7 @@
                     <span flex>Check Code Via Moss</span>
                     <paper-fab id="btn-add" icon="add" on-click="{{tapSelect}}"></paper-fab>
                     <form id="uploadForm">
-                      <input id="input_hiden" type="file" style="display: none" name="files[]" on-change="{{handleFilePick}}" multiple></input>
+                        <input id="input_hiden" type="file" style="display: none" name="files[]" on-change="{{handleFilePick}}" multiple></input>
                     </form>
                 </core-toolbar>
                 <div id="dropzone" on-tap="{{tapSelect}}" on-dragover="{{handleDragOver}}" on-drop="{{handleFileSelect}}">
@@ -104,10 +104,14 @@
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/Polymer_Moss/service.php', true);
             var formData = new FormData(this.$.uploadForm);
-            formData.append('language',this.language);
-            xhr.onload = function(e) {var result = xhr.responseText;
-            var win = window.open(result, '_blank');
-            win.focus();};
+            formData.append('language', this.language);
+            xhr.onload = function(e) {
+                var result = xhr.responseText;
+                var a = document.createElement('a');
+                a.setAttribute('href', result);
+                document.body.appendChild(a);
+                a.click();
+            };
             xhr.send(formData);
         },
         manualUpload: function() {
