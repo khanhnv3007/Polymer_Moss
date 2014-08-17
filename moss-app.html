@@ -107,11 +107,12 @@
             formData.append('language', this.language);
             xhr.onload = function(e) {
               var result = xhr.responseText;
+              console.log(result);
               if (result == 0) {
-                alert('please choose a language');
+                alert('Please choose a language.');
               }
               else if (result == 1) {
-                alert('please add files');
+                alert('Please choose files.');
               }
               else{
                 var result = xhr.responseText;

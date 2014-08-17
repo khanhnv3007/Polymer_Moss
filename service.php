@@ -28,7 +28,7 @@ function remove_directory($dir) {
 
 $language = $_POST['language'];
 if (in_array($language, $allowed_languages)) {
-	if (empty($_FILES)) {
+	if ($_FILES['files']['error'][0] == 0) {
 		$userid      = "7967497";
 		$moss        = new MOSS($userid);
 		$name_folder = generateRandomString();
@@ -46,7 +46,7 @@ if (in_array($language, $allowed_languages)) {
 		}
 		$moss->setLanguage($language);
 		$moss->addByWildcard($path.'*');
-// $moss->setCommentString("This is a test");
+		// $moss->setCommentString("This is a test");
 		print_r($moss->send());
 		remove_directory('./'.$name_folder);
 	} else {
