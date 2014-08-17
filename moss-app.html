@@ -49,12 +49,11 @@
                     <br>
                 </paper-radio-group>
             </core-header-panel>
-            <core-ajax></core-ajax>
             <core-header-panel main mode="waterfall">
                 <core-toolbar>
                     <paper-icon-button icon="menu" on-click="{{toggleDrawer}}"></paper-icon-button>
                     <span flex>Check Code Via Moss</span>
-                    <paper-fab id="btn-upload" icon="add" on-click="{{tapSelect}}"></paper-fab>
+                    <paper-fab id="btn-add" icon="add" on-click="{{tapSelect}}"></paper-fab>
                     <form id="uploadForm">
                       <input id="input_hiden" type="file" style="display: none" name="files[]" on-change="{{handleFilePick}}" multiple></input>
                     </form>
@@ -68,8 +67,9 @@
                             </li>
                         </template>
                     </ul>
-                    <div>{{result}}</div>
                 </div>
+
+                <!-- <core-ajax auto url="/Polymer_Moss/service.php" handleAs="text" respone="{{result}}" method="POST"></core-ajax> -->
                 <paper-fab icon="backup" style="position: fixed; bottom: 10px; right: 16px; color: white" on-click="{{uploadFiles}}"></paper-fab>
             </core-header-panel>
         </core-drawer-panel>
@@ -101,16 +101,14 @@
             this.uploadList = [];
         },
         uploadFiles: function(files) {
-        //     var uploadedList = this.uploadedList;
             var xhr = new XMLHttpRequest();
             xhr.open('POST', '/Polymer_Moss/service.php', true);
             var formData = new FormData(this.$.uploadForm);
             formData.append('language',this.language);
-            var result;
-            xhr.onload = function(e) {result = xhr.responseText;};
-            xhr.send(formData, function() {
-              window.open(result);
-            });
+            xhr.onload = function(e) {var result = xhr.responseText;
+            var win = window.open(result, '_blank');
+            win.focus();};
+            xhr.send(formData);
         },
         manualUpload: function() {
             this.uploadFiles(this.queue);
