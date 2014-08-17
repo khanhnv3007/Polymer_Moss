@@ -106,11 +106,20 @@
             var formData = new FormData(this.$.uploadForm);
             formData.append('language', this.language);
             xhr.onload = function(e) {
+              var result = xhr.responseText;
+              if (result == 0) {
+                alert('please choose a language');
+              }
+              else if (result == 1) {
+                alert('please add files');
+              }
+              else{
                 var result = xhr.responseText;
                 var a = document.createElement('a');
                 a.setAttribute('href', result);
                 document.body.appendChild(a);
                 a.click();
+              }
             };
             xhr.send(formData);
         },
