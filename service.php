@@ -7,6 +7,21 @@ function generateRandomString($length = 10) {
     }
     return $randomString;
 }
+function remove_directory($dir){
+  if($handle = opendir("$dir")){
+     while(false !== ($item = readdir($handle))){
+       if($item != "." && $item != ".."){
+          if(is_dir("$dir/$item")){
+             remove_directory("$dir/$item");
+          }else{
+          unlink("$dir/$item");
+         }
+        }
+     }
+     closedir($handle);
+     rmdir($dir);
+   }
+}
 include("moss.php");
 $userid = "7967497"; // Enter your MOSS userid
 $moss = new MOSS($userid);
@@ -25,7 +40,7 @@ if (isset($_POST) and $_SERVER['REQUEST_METHOD'] == "POST") {
 }
 $moss->setLanguage($language);
 $moss->addByWildcard($path.'*');
-rmdir('./'.$name_folder);
 // $moss->setCommentString("This is a test");
 print_r($moss->send());
+remove_directory('./'.$name_folder);
 ?>
